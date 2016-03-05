@@ -1,0 +1,25 @@
+{
+  "name": "cpsc113-social-todo-node",
+  "version": "1.0.0",
+  "description": "my assignment for class",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amyh576/cpsc113-social-todo-node.git"
+  },
+  "author": "",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/amyh576/cpsc113-social-todo-node/issues"
+  },
+  "homepage": "https://github.com/amyh576/cpsc113-social-todo-node#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.1"
+  }
+}
