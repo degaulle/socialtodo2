@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/amyh576/cpsc113-social-todo-node#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "express-handlebars": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.9.1"
