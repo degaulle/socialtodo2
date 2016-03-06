@@ -2,7 +2,16 @@
 
 <div>
     We currently have {{userCount}} users.
+    {{#if currentUser}}
+        Your name is <b>{{currentUser.name}}</b>
+    {{/if}}
 </div>
+
+{{#if errors}}
+<div style="color:red">
+   {{errors}}
+</div>
+{{/if}}
 
 <div>
     <form class="login-form" action="/user/login">
