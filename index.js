@@ -1,13 +1,18 @@
 var express = require('express');
 var exphbs  = require('express-handlebars');
+var mongoose = require('mongoose');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
+
+// connect to Mongoose
+mongoose.connect(process.env.MONGO_URL);
+
 var MongoDBStore = require('connect-mongodb-session')(session);
 var Users = require('./models/users.js'); // models usually have uppercase variables
+var Tasks = require('./models/tasks.js');
 
 // configure the app
-
 var store = new MongoDBStore({ 
   uri: process.env.MONGO_URL,
   collection: 'sessions'
@@ -44,19 +49,38 @@ app.use(function(req, res, next){
   }
 });
 
-// checks for errors and also counts number of users in database
-app.get('/', function (req, res) {
-  Users.count(function (err, users) {
-    if (err) {
-      res.send('error getting users');
+// check if anyone is logged in
+function isLoggedIn(req, res, next){
+  if(res.locals.currentUser){
+    next();
+  }
+  else {
+    res.sendStatus(403); // prohibited
+  }
+}
+
+// show user's tasks
+function loadUserTasks(req, res, next) {
+  // terminate execution if no logged in user, because we want this on the homepage
+  if(!res.locals.currentUser){
+    return next();
+  }
+  
+  // find tasks where the user is a collaborator or an owner
+  Tasks.find({}).or([
+    {owner: res.locals.currentUser},
+    {collaborators: res.locals.currentUser.email}])
+    .exec(function(err, tasks){
+    if(!err){
+      res.locals.tasks = tasks;
     }
-    else {
-    res.render('index', {
-      userCount: users.length,
-      currentUser: res.locals.currentUser
-    });
-    }
+    next();
   });
+}
+
+// render homepage with user's tasks
+app.get('/', loadUserTasks, function (req, res) {
+  res.render('index');
 });
 
 // registration checks
@@ -105,6 +129,26 @@ app.post('/user/login', function (req, res) {
 app.get('/user/logout', function(req, res){
   req.session.destroy();
   res.redirect('/');
+});
+
+// all the controllers and routes below this require the user to be logged in
+app.use(isLoggedIn);
+
+// create task capability
+app.post('/tasks/create', function(req, res){
+  var newTask = new Tasks();
+  newTask.owner = res.locals.currentUser._id;
+  newTask.title = req.body.title;
+  newTask.description = req.body.description;
+  newTask.collaborators = [req.body.collaborator1, req.body.collaborator2, req.body.collaborator3];
+  newTask.save(function(err, savedTask){
+    if(err || !savedTask){
+      res.send('Unable to save task');
+    }
+    else{
+      res.redirect('/');
+    }
+  });
 });
 
 app.listen(process.env.PORT, function () {

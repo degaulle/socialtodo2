@@ -1,17 +1,40 @@
-<h1>Example App: Home</h1>
-
-<div>
-    We currently have {{userCount}} users.
-    {{#if currentUser}}
-        Your name is <b>{{currentUser.name}}</b>
-    {{/if}}
-</div>
+<h1>Social todo app for CPSC113</h1>
 
 {{#if errors}}
 <div style="color:red">
    {{errors}}
 </div>
 {{/if}}
+
+{{#if currentUser}}
+    <h2>Welcome, {{currentUser.name}}</h2>
+    <h4>Your Tasks</h4>
+    {{#if tasks}}
+        <ul>
+        {{#each tasks}}
+            <li>{{this.title}}</li>
+            {{/each}}
+        </ul>
+    {{else}}
+        No tasks to show!
+    {{/if}}
+    <hr>
+    <div>
+        <h4>Add a new task</h4>
+        <form action="/tasks/create" method="POST">
+            <label for="title">Task title</label>
+            <input name="title" type="text"><br>
+            <label for="description">Task description</label>
+            <input name="description" type="text"><br>
+            Collaborators<br>
+            <input name="collaborator1" type="email"><br>
+            <input name="collaborator2" type="email"><br>
+            <input name="collaborator3" type="email"><br>
+            <input type="submit"><br>
+        </form>
+    </div>
+
+{{else}}
 
 <div>
     <form class="login-form" action="/user/login" method="POST">
@@ -20,7 +43,6 @@
         <label for="password">Password</label>
         <input name="password" type="text"><br>
         <input type="submit"><br>
-
     </form>
 </div>
 
@@ -37,3 +59,4 @@
       </div>
     </form>
 </div>
+{{/if}}

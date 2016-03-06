@@ -2,8 +2,6 @@ var mongoose = require('mongoose');
 var bcrypt= require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
-mongoose.connect(process.env.MONGO_URL);
-
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
     
@@ -55,7 +53,7 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
     });
 };
 
-// a function that is attached to this schema
+// a function that is attached to this schema, to count the number of users in the database
 UserSchema.statics.count = function (cb) {
   return this.model('Users').find({}, cb);
 };
