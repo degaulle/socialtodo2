@@ -3,19 +3,28 @@ var exphbs  = require('express-handlebars');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var MongoDBStore = require('connect-mongodb-session')(session);
 var Users = require('./models/users.js'); // models usually have uppercase variables
 
 // configure the app
+
+var store = new MongoDBStore({ 
+  uri: process.env.MONGO_URL,
+  collection: 'sessions'
+});
+
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+// checking if there is a session for this cookie
 app.use(session({
   secret: process.env.SESSION_SECRET, // do not want this in version control
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: 'auto' }
+  cookie: { secure: 'auto' },
+  store: store
 })); // middleware for cookie signing
-
 
 // look up the user information in the database
 app.use(function(req, res, next){
@@ -68,6 +77,27 @@ app.post('/user/register', function (req, res) {
     {
       res.redirect('/');
     }
+  });
+});
+
+// log in capability
+app.post('/user/login', function (req, res) {
+  var user = Users.findOne({email: req.body.email},
+  function(err, user){
+    if(err){
+      res.send('unable to log in; no such user');
+      return;
+    }
+    user.comparePassword(req.body.password,
+    function(err, isMatch){
+      if(err || !isMatch){
+        res.send('password is wrong');
+      }
+      else{
+        req.session.userId = user._id;
+        res.redirect('/');
+      }
+    });
   });
 });
 
