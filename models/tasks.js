@@ -9,10 +9,16 @@ var stringField = {
     maxlength: 500
 };
 
+var descriptionField = {
+    type: String,
+    minlength: 0,
+    maxlength: 5000
+};
+
 var TaskSchema = new Schema({
     owner: ObjectId,
     title: stringField,
-    description: stringField,
+    description: descriptionField,
     isComplete: Boolean,
     collaborators: [String]
 });

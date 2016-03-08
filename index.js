@@ -66,7 +66,7 @@ function loadUserTasks(req, res, next) {
     return next();
   }
   
-  // find tasks where the user is a collaborator or an owner
+  // find tasks where the user is an owner
   Tasks.find({}).or([
     {owner: res.locals.currentUser},
     {collaborators: res.locals.currentUser.email}])
@@ -93,29 +93,32 @@ app.post('/user/register', function (req, res) {
   newUser.email = req.body.email;
   newUser.name = req.body.fl_name;
   newUser.save(function(err, user){
-    req.session.userId = user._id;
-    if (err) {
-      res.render('index', {errors: err});
-    }
-    else
-    {
+    if(user && !err){
+      req.session.userId = user._id;
       res.redirect('/');
+    }
+    var errors = "Error registering you.";
+    if(err){
+      if(err.errmsg && err.errmsg.match(/duplicate/)){
+        errors = 'Account with this email already exists!';
+      }
+      return res.render('index', {errors: errors});
     }
   });
 });
 
 // log in capability
 app.post('/user/login', function (req, res) {
-  var user = Users.findOne({email: req.body.email},
+  Users.findOne({email: req.body.email},
   function(err, user){
-    if(err){
-      res.send('unable to log in; no such user');
+    if(err || !user){
+      res.send('Invalid email address');
       return;
     }
     user.comparePassword(req.body.password,
     function(err, isMatch){
       if(err || !isMatch){
-        res.send('password is wrong');
+        res.send('Invalid password');
       }
       else{
         req.session.userId = user._id;
@@ -135,15 +138,16 @@ app.get('/user/logout', function(req, res){
 app.use(isLoggedIn);
 
 // create task capability
-app.post('/tasks/create', function(req, res){
+app.post('/task/create', function(req, res){
   var newTask = new Tasks();
   newTask.owner = res.locals.currentUser._id;
   newTask.title = req.body.title;
   newTask.description = req.body.description;
+  newTask.isComplete = false;
   newTask.collaborators = [req.body.collaborator1, req.body.collaborator2, req.body.collaborator3];
   newTask.save(function(err, savedTask){
     if(err || !savedTask){
-      res.send('Unable to save task');
+      res.send('Error saving task!');
     }
     else{
       res.redirect('/');
@@ -151,6 +155,63 @@ app.post('/tasks/create', function(req, res){
   });
 });
 
+// mark task as complete
+app.get('/complete/:id', function(req, res){
+  Tasks.findByIdAndUpdate(req.params.id, {
+    $set: {
+      "isComplete" : true
+    }
+  }, function(err, toggletask){
+    if(err || !toggletask){
+      res.send('Error changing task completion status');
+    }
+    else{
+      res.redirect('/');
+    }
+  });
+});
+
+// mark task as incomplete
+app.get('/incomplete/:id', function(req, res){
+  Tasks.findByIdAndUpdate(req.params.id, {
+    $set: {
+      "isComplete" : false
+    }
+  }, function(err, toggletask){
+    if(err || !toggletask){
+      res.send('Error changing task completion status');
+    }
+    else{
+      res.redirect('/');
+    }
+  });
+});
+
+// delete task
+app.get('/delete/:id', function(req, res){
+  Tasks.findById(req.params.id, function(err, found){
+    if(err || !found){
+      res.send('There was a problem deleting that task');
+    }
+    else{
+      if(found.owner.toString() == req.session.userId.toString()){
+        Tasks.findByIdAndRemove(req.params.id, function(err, deleted){
+          if(err || !deleted){
+            res.send('There was a problem deleting that task');
+          }
+          else{
+            res.redirect('/');
+          }
+        });
+      }
+      else{
+        res.send('Sorry, you do not have permission to delete this task');
+      }
+    }
+  });
+});
+
+// starting the server
 app.listen(process.env.PORT, function () {
   console.log('Example app listening on port ' + process.env.PORT);
 });

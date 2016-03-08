@@ -1,7 +1,7 @@
 <h1>Social todo app for CPSC113</h1>
 
 {{#if errors}}
-<div style="color:red">
+<div style="color:red" class="validation-error">
    {{errors}}
 </div>
 {{/if}}
@@ -10,18 +10,33 @@
     <h2>Welcome, {{currentUser.name}}</h2>
     <h4>Your Tasks</h4>
     {{#if tasks}}
-        <ul>
-        {{#each tasks}}
-            <li>{{this.title}}</li>
+        <fieldset class="tasks-list">
+            {{#each tasks}}
+            <div class="tasks-list-item">
+                
+                {{#if this.isComplete}}
+                    <span class="complete-task" class="task-title"><strike>{{this.title}}</strike></span>
+                    <form action="/incomplete/{{this._id}}" class="toggle-task" method="GET"><button type="submit" class="toggle-task" name="toggle-task">Mark as Incomplete</button></form>
+                    
+                {{else}}
+                    <span class="task-title">{{this.title}}</span>
+                    <form action="/complete/{{this._id}}" class="toggle-task" method="GET"><button type="submit" class="toggle-task" class="complete-task" name="toggle-task">Mark as Complete</button></form>
+                
+                {{/if}}
+                
+                <form action="/delete/{{this._id}}" class="delete-task" method="GET"><button type="submit" class="delete-task" name="delete-task">Delete Task</button></form>
+                
+            </div>
             {{/each}}
-        </ul>
+	    </fieldset>
+
     {{else}}
         No tasks to show!
     {{/if}}
     <hr>
     <div>
         <h4>Add a new task</h4>
-        <form action="/tasks/create" method="POST">
+        <form action="/task/create\" method="POST" class="create-task">
             <label for="title">Task title</label>
             <input name="title" type="text"><br>
             <label for="description">Task description</label>
@@ -42,7 +57,7 @@
         <input name="email" type="text"><br>
         <label for="password">Password</label>
         <input name="password" type="text"><br>
-        <input type="submit"><br>
+        <input type="submit" class="log-in-submit"><br>
     </form>
 </div>
 
