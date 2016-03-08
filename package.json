@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "MONGO_URL='mongodb://localhost:27017/social-todo' SESSION_SECRET='foo123' nodemon ./index.js"
   },
   "repository": {
     "type": "git",
