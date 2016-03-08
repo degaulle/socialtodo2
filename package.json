@@ -1,11 +1,14 @@
 {
   "name": "cpsc113-social-todo-node",
   "version": "1.0.0",
+  "engines": {
+    "node": "4.2.4"
+  }
   "description": "my assignment for class",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node your-script.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
