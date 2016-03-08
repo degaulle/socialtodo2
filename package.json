@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "engines": {
     "node": "4.2.4"
-  }
+  },
   "description": "my assignment for class",
   "main": "index.js",
   "scripts": {
