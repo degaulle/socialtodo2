@@ -17,11 +17,11 @@
   "author": "",
   "license": "Unlicense",
   "bugs": {
-    "url": "https://github.com/amyh576/cpsc113-social-todo-node/issues"
+    "url": "https://socialtodo2-barkleydai.c9users.io/"
   },
-  "homepage": "https://github.com/amyh576/cpsc113-social-todo-node#readme",
+  "homepage": "https://socialtodo2-barkleydai.c9users.io/",
   "dependencies": {
-    "bcrypt": "^0.8.5",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.0",
     "connect-mongodb-session": "^1.1.1",
     "express": "^4.13.4",
