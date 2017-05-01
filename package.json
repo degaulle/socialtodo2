@@ -1,10 +1,10 @@
 {
-  "name": "cpsc113-social-todo-node",
+  "name": "cpsc213-social-todo",
   "version": "1.0.0",
   "engines": {
     "node": "4.2.4"
   },
-  "description": "my assignment for class",
+  "description": "social todo app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -27,6 +27,7 @@
     "express": "^4.13.4",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.13.0",
+    "mongodb": "^2.2.26",
     "mongoose": "^4.4.6"
   },
   "devDependencies": {

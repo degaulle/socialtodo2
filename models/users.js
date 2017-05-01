@@ -1,29 +1,34 @@
 var mongoose = require('mongoose');
-var bcrypt= require('bcrypt');
+var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
+
+
+mongoose.createConnection('mongodb://localhost:27017/social-todo');
 
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
-    
-var stringField = {
-    type: String,
-    minlength: 1,
-    maxlength: 50
-};
+
+
+ var stringField = {
+ 	type: String,
+ 	minlength: 1,
+ 	maxlength: 50
+ };
 
 var UserSchema = new Schema({
     email: {
         type: String,
+        unique: true,
         minlength: 1,
         maxlength: 50,
-        lowercase: true,
-        unique: true
+        lowercase: true  
     },
     name: stringField,
-    hashed_password: stringField
+    hashed_password	: stringField,
+
 });
 
-// use bcrypt
+
 UserSchema.pre('save', function(next) {
     var user = this;
 
@@ -43,19 +48,14 @@ UserSchema.pre('save', function(next) {
             next();
         });
     });
+
 });
 
-// compare hashed password with candidate password
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.hashed_password, function(err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
     });
-};
-
-// a function that is attached to this schema, to count the number of users in the database
-UserSchema.statics.count = function (cb) {
-  return this.model('Users').find({}, cb);
 };
 
 module.exports = mongoose.model('Users', UserSchema);
