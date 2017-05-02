@@ -4,6 +4,7 @@ var SALT_WORK_FACTOR = 10;
 
 
 mongoose.createConnection('mongodb://localhost:27017/social-todo');
+//mongoose.createConnection('mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app');
 
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;

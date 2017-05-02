@@ -6,7 +6,8 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 // connect to Mongoose
-mongoose.connect(process.env.MONGO_URL);
+mongoose.createConnection(process.env.MONGO_URL);
+//mongoose.createConnection('mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app');
 
 var MongoDBStore = require('connect-mongodb-session')(session);
 var Users = require('./models/users.js'); // models usually have uppercase variables
