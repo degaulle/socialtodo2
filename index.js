@@ -4,10 +4,12 @@ var mongoose = require('mongoose');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var MONGODB_URL = require('./config/database.js');
+var MONGO_URL = require('./config/database.js');
 
 // connect to Mongoose
+MONGO_URL = 'mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app';
 mongoose.createConnection(process.env.MONGO_URL);
+
 //mongoose.createConnection('mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app');
 
 var MongoDBStore = require('connect-mongodb-session')(session);
