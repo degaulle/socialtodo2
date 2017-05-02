@@ -1,4 +1,4 @@
 module.exports={
     
-    'url' : 'mongodb://abcde:12345@ds123331.mlab.com:23331/social-todo'
+    'url' : 'mongodb://asd:asd@ds127731.mlab.com:27731/social-todo'
 };
