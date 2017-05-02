@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "MONGO_URL='mongodb://localhost:27017/social-todo' SESSION_SECRET='foo123' nodemon ./index.js"
+    "start": "MONGO_URL='mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app' SESSION_SECRET='sdfs' nodemon ./index.js"
   },
   "repository": {
     "type": "git",
