@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var MONGODB_URL = require('./config/database.js');
 
 // connect to Mongoose
 mongoose.createConnection(process.env.MONGO_URL);
