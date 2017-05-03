@@ -8,7 +8,7 @@ var MONGOLAB_ROSE_URI = require('./config/database.js');
 
 // connect to Mongoose
 MONGOLAB_ROSE_URI = 'mongodb://heroku_d68k9f53:h7d9292to5ehgsd6pthm2uuprf@ds127731.mlab.com:27731/heroku_d68k9f53';
-mongoose.createConnection(process.env.MONGODB_ROSE_URI);
+mongoose.createConnection(process.env.MONGOLAB_ROSE_URI);
 
 //mongoose.createConnection('mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app');
 
