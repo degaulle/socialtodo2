@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var SALT_WORK_FACTOR = 10;
-
+//random stuff
 
 mongoose.createConnection('mongodb://heroku_d68k9f53:h7d9292to5ehgsd6pthm2uuprf@ds127731.mlab.com:27731/heroku_d68k9f53');
 //mongoose.createConnection('mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app');
