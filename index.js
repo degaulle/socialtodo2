@@ -8,7 +8,7 @@ var MONGO_URL = require('./config/database.js');
 
 // connect to Mongoose
 MONGO_URL = 'mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app';
-mongoose.createConnection(process.env.MONGO_URL);
+mongoose.createConnection(process.env.MONGOLAB_ROSE_URI);
 
 //mongoose.createConnection('mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app');
 
