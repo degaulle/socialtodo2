@@ -4,11 +4,11 @@ var mongoose = require('mongoose');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var MONGO_URL = require('./config/database.js');
+var MONGOLAB_ROSE_URI = require('./config/database.js');
 
 // connect to Mongoose
-MONGO_URL = 'mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app';
-mongoose.createConnection(process.env.MONGOLAB_ROSE_URI);
+MONGOLAB_ROSE_URI = 'mongodb://heroku_d68k9f53:h7d9292to5ehgsd6pthm2uuprf@ds127731.mlab.com:27731/heroku_d68k9f53';
+mongoose.createConnection(process.env.MONGODB_ROSE_URI);
 
 //mongoose.createConnection('mongodb://asd:asd@ds127731.mlab.com:27731/social-todo-app');
 
@@ -18,7 +18,7 @@ var Tasks = require('./models/tasks.js');
 
 // configure the app
 var store = new MongoDBStore({ 
-  uri: process.env.MONGO_URL,
+  uri: process.env.MONGOLAB_ROSE_URI,
   collection: 'sessions'
 });
 
