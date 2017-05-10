@@ -1,30 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CPSC213 Todo</title>
+</head>
+<body>
 <h1>Social todo app for cpsc213</h1>
 
 {{#if errors}}
-<div style="color:red" class="validation-error">
+<div style="color:red" class="errors">
    {{errors}}
 </div>
 {{/if}}
 
 {{#if currentUser}}
-    <h2>Welcome, {{currentUser.name}}</h2>
+    <h2 class="welcome">Welcome, {{currentUser.name}}</h2>
     <h4>Your Tasks</h4>
     {{#if tasks}}
-        <fieldset class="tasks-list">
+        <fieldset class="tasks">
             {{#each tasks}}
             <div class="tasks-list-item">
                 
                 {{#if this.isComplete}}
                     <span class="complete-task" class="task-title"><strike>{{this.title}}</strike></span>
-                    <form action="/incomplete/{{this._id}}" class="toggle-task" method="GET"><button type="submit" class="toggle-task" name="toggle-task">Mark as Incomplete</button></form>
+                    <form action="/tasks/{{this._id}}/incomplete" class="toggle" method="GET"><button type="submit" class="toggle" name="toggle">Mark as Incomplete</button></form>
                     
                 {{else}}
                     <span class="task-title">{{this.title}}</span>
-                    <form action="/complete/{{this._id}}" class="toggle-task" method="GET"><button type="submit" class="toggle-task" class="complete-task" name="toggle-task">Mark as Complete</button></form>
+                    <form action="/tasks/{{this._id}}/complete" class="toggle" method="GET"><button type="submit" class="toggle" class="complete" name="toggle">Mark as Complete</button></form>
                 
                 {{/if}}
                 
-                <form action="/delete/{{this._id}}" class="delete-task" method="GET"><button type="submit" class="delete-task" name="delete-task">Delete Task</button></form>
+                <form action="/tasks/{{this._id}}/delete" class="delete" method="GET"><button type="submit" class="delete" name="delete">Delete Task</button></form>
                 
             </div>
             {{/each}}
@@ -36,42 +43,46 @@
     <hr>
     <div>
         <h4>Add a new task</h4>
-        <form action="/task/create\" method="POST" class="create-task">
-            <label for="title">Task title</label>
-            <input name="title" type="text"><br>
-            <label for="description">Task description</label>
+        <form class="createTask" action="/task/create" method="POST">
+            <label for="name">Task name</label>
+            <input name="name" type="text"><br>
+            <label for="description">Task Description</label>
             <input name="description" type="text"><br>
             Collaborators<br>
             <input name="collaborator1" type="email"><br>
             <input name="collaborator2" type="email"><br>
             <input name="collaborator3" type="email"><br>
-            <input type="submit"><br>
+            <input type="submit" class="create-task-submit">
         </form>
     </div>
+
 
 {{else}}
 
 <div>
-    <form class="login-form" action="/user/login" method="POST">
+    <form class="login" action="/user/login" method="POST">
         <label for="email">Email</label>
-        <input name="email" type="text"><br>
+        <input name="email" id="email" type="text"><br>
         <label for="password">Password</label>
-        <input name="password" type="text"><br>
-        <input type="submit" class="log-in-submit"><br>
+        <input name="password"  id="password" type="text"><br>
+        <input type="submit"  class="log-in-submit">
     </form>
 </div>
 
 <div><hr></div>
 
 <div>
-    <form action="/user/register" method="post" class="signup-form" style="display: block;">
-      <input name="fl_name" type="text" class="text-input" placeholder="first &amp; last name">
+    <form class="register" action="/user/register" method="POST" class="signup-form" style="display: block;">
+      <input name="name" type="text" class="text-input" placeholder="first &amp; last name">
       <input name="email" type="email" class="text-input" placeholder="email">
       <input name="password" type="password" class="text-input" placeholder="password">
-      <input name="password_confirmation" type="password" class="text-input" placeholder="password confirmation">
-      <div>
-        <button class="blue sign-up-submit">Sign Up</button>
-      </div>
+      <input name="passwordConfirmation" type="password" class="text-input" placeholder="password confirmation">
+      <input class="sign-up-submit" type="submit">
     </form>
-</div>
+</div>s
 {{/if}}
+<footer>
+    <a href="/user/logout" class="logout">Logout</a>
+</footer>
+</body>
+</html>
