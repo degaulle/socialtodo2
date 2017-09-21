@@ -1,5 +1,5 @@
 # CPSC213 Social todo app
-This is Barkley Dai's social todo app
+This is Barkley Dai's social todo app for CPSC213
 
 run with
 
